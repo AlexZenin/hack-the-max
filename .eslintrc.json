@@ -1,5 +1,15 @@
 {
   "parser": "@typescript-eslint/parser",
+  "extends": [
+    "next/core-web-vitals", 
+    "plugin:@typescript-eslint/recommended", 
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+		"prettier"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -10,8 +20,5 @@
         "project": ["./tsconfig.json"]
       }
   }
-  ],
-  "plugins": ["@typescript-eslint"],
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"]
-
+  ]
 }
