@@ -1,18 +1,16 @@
-import { NextApiResponse } from 'next'
 // pages/api/results.js
 
-import { Redis } from '@upstash/redis'
+import { Redis } from "@upstash/redis";
 
-const resultsHandler = async (_, res: NextApiResponse) => {
+const resultsHandler = async (req, res) => {
   // Retrieve data from redis
 
   const redis = new Redis({
     url: 'https://apn1-unique-rabbit-33775.upstash.io',
-    token:
-      'AYPvASQgOTJhOThiOTctMGU0Mi00MmJiLWFjY2YtNGExNWZlOGM4MGE1OWU0YmZkNDkxOGJlNDhkNGJkNjI5MGI4MDdhZTAzMTk=',
-  })
+    token: 'AYPvASQgOTJhOThiOTctMGU0Mi00MmJiLWFjY2YtNGExNWZlOGM4MGE1OWU0YmZkNDkxOGJlNDhkNGJkNjI5MGI4MDdhZTAzMTk=',
+  });
 
-  console.log('request received')
+  console.log("request received");
   try {
     //Find all the entries in the set
     // const entries = await redis.smembers("entries");
@@ -25,22 +23,22 @@ const resultsHandler = async (_, res: NextApiResponse) => {
     //   p.hgetall(id);
     // });
     // const results = await p.exec();
-    console.log('request received')
-    const results = await redis.get('pos1')
+    console.log("request received");
+    const results = await redis.get("pos1");
 
     return res.status(200).json({
       success: true,
-      message: 'Data retrieved successfully',
+      message: "Data retrieved successfully",
       data: results,
-    })
+    });
   } catch (error) {
-    console.error('Failed to retrieve data from redis', error)
+    console.error("Failed to retrieve data from redis", error);
 
     return res.status(500).json({
       success: false,
-      message: 'Failed to retrieve data from redis',
-    })
+      message: "Failed to retrieve data from redis",
+    });
   }
-}
+};
 
-export default resultsHandler
+export default resultsHandler;
