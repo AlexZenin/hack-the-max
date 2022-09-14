@@ -157,8 +157,8 @@ const SignupForm = () => {
             {loading ? <p>Spinner</p> : <p>Opt In</p>}
           </button>
         </div>
-        </form>
-        <img src={uploadedFile}/>
+      </form>
+      <img src={uploadedFile} />
     </div>
   )
 }

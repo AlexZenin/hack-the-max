@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next'
 
 export default function handler(_, res: NextApiResponse) {
-  res.setHeader("Access-Control-Allow-Origin", "*").status(200).json(DUMMY_DATA)
+  res.setHeader('Access-Control-Allow-Origin', '*').status(200).json(DUMMY_DATA)
 }
 
 const DUMMY_DATA = [
