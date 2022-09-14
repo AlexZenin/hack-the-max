@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import axios from 'axios'
+import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
 
 const BUCKET_URL =
   'https://guess-who-hackathon.s3.ap-southeast-2.amazonaws.com/'
@@ -49,16 +50,16 @@ const SignupForm = () => {
     )
     uploadFile()
     setLoading(true)
-    fetch('/api/user')
-      .then(() => {
-        setStatus('success')
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    // fetch('/api/user')
+    //   .then(() => {
+    //     setStatus('success')
+    //   })
+    //   .catch((err) => {
+    //     console.error(err)
+    //   })
+    //   .finally(() => {
+    //     setLoading(false)
+    //   })
   }
 
   const uploadFile = async () => {
@@ -86,7 +87,8 @@ const SignupForm = () => {
     })
 
     setUploadedFile(BUCKET_URL + file.name)
-    setFile(null)
+    console.log(uploadedFile)
+    //setFile(null)
   }
 
   return (
@@ -155,7 +157,8 @@ const SignupForm = () => {
             {loading ? <p>Spinner</p> : <p>Opt In</p>}
           </button>
         </div>
-      </form>
+        </form>
+        <img src={uploadedFile}/>
     </div>
   )
 }
