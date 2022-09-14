@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@upstash/redis": "1.13.1",
     "aws-sdk": "^2.1215.0",
     "axios": "^0.27.2",
     "next": "12.2.5",
