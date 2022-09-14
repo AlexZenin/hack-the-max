@@ -30,7 +30,7 @@ const submitHandler = async (req, res) => {
     await redis.hset(`entries:${id}`, data);
 
     //Store the id of the survey to retrieve it later
-    // await redis.sadd("entries", `entries:${id}`);
+    await redis.sadd("entries", `entries:${id}`);
   } catch (error) {
     console.error("Failed to insert data into redis", error);
 
