@@ -27,7 +27,7 @@ const resultsHandler = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Data retrieved successfully",
-      data: results,
+      userProfiles: results,
     });
   } catch (error) {
     console.error("Failed to retrieve data from redis", error);

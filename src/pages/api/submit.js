@@ -13,11 +13,17 @@ const submitHandler = async (req, res) => {
 
 
   // Prepare data to be inserted into the DB
+  const location = {
+      lat: String(body.location.lat) || "",
+      lng: String(body.location.lng) || "",
+  }
   const data = {
-    email: String(body.email) || "",
-    customerNumber: String(body.customerNumber) || "",
-    company: String(body.company) || "Your Company",
+    name: String(body.email),
+    accountName:  String(body.accountName) || "",
+    accountNumber:  String(body.accountNumber) || "",
+    phoneNumber: String(body.phoneNumber) || "N/A",
     imageURL: String(body.imageURL) || "",
+    location: location,
   };
 
 
