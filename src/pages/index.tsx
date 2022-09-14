@@ -1,6 +1,9 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
 import Head from 'next/head'
+import { useState } from 'react'
+import axios from "axios";
+
+const BUCKET_URL = "https://guess-who-hackathon.s3.ap-southeast-2.amazonaws.com/";
 
 const Home: NextPage = () => {
   return (
@@ -23,6 +26,16 @@ export default Home
 const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [status, setStatus] = useState<string>('init')
+  const [file, setFile] = useState<any>();
+  const [uploadingStatus, setUploadingStatus] = useState<any>();
+  const [uploadedFile, setUploadedFile] = useState<any>();
+
+  function selectFile(e: any) {
+    console.log(e.target.files);
+    setFile(e.target.files[0]);
+    console.log(file);
+  }
+  
   function handleSubmit(e: any) {
     e.preventDefault()
     const { name, email, company } = e.target.elements
@@ -33,6 +46,7 @@ const SignupForm = () => {
         company: company.value,
       }),
     )
+    uploadFile();
     setLoading(true)
     fetch('/api/user')
       .then(() => {
@@ -45,6 +59,34 @@ const SignupForm = () => {
         setLoading(false)
       })
   }
+
+  const uploadFile = async () => {
+    //for ux info
+    setUploadingStatus("Uploading the file to AWS S3");
+
+    //post req to own endpoint to get aws fancy url ting
+    let { data } = await axios.post("/api/s3/uploadFile", {
+      name: file.name,
+      type: file.type,
+    });
+
+    //what did we get
+    console.log(data);
+    
+    //get the url 
+    const url = data.url;
+
+    //upload the file
+    let { data: newData } = await axios.put(url, file, {
+      headers: {
+        "Content-type": file.type,
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+
+    setUploadedFile(BUCKET_URL + file.name);
+    setFile(null);
+  };
 
   return (
     <div className="max-w-lg mx-[auto] pt-4">
@@ -96,6 +138,13 @@ const SignupForm = () => {
             type="email"
             placeholder="example@reece.com"
           />
+          {/* <p className="text-xs italic">Please choose a password.</p> */}
+        </div >
+        <div className="container flew items-center p-4 mx-auto min-h screen justify-center">
+          <main>
+            <p>Please select an image to upload so that we can identify you!</p>
+            <input type="file" onChange={(e) => selectFile(e)} />
+          </main>
         </div>
         <div className="flex items-center justify-between">
           <button
