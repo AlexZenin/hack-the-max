@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useState } from 'react'
 import Head from 'next/head'
 
 const Home: NextPage = () => {
@@ -20,12 +21,29 @@ const Home: NextPage = () => {
 export default Home
 
 const SignupForm = () => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [status, setStatus] = useState<string>('init')
   function handleSubmit(e: any) {
     e.preventDefault()
-    const { username, password } = e.target.elements
+    const { name, email, company } = e.target.elements
     console.log(
-      JSON.stringify({ username: username.value, password: password.value }),
+      JSON.stringify({
+        name: name.value,
+        email: email.value,
+        company: company.value,
+      }),
     )
+    setLoading(true)
+    fetch('/api/user')
+      .then(() => {
+        setStatus('success')
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
@@ -37,16 +55,16 @@ const SignupForm = () => {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            id="username"
-            htmlFor="username"
+            id="name"
+            htmlFor="name"
           >
-            Username
+            Name
           </label>
           <input
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
+            id="name"
             type="text"
-            placeholder="Username"
+            placeholder="Name"
           />
         </div>
         <div className="mb-4">
@@ -84,7 +102,7 @@ const SignupForm = () => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
             type="submit"
           >
-            Opt In
+            {loading ? <p>Spinner</p> : <p>Opt In</p>}
           </button>
         </div>
       </form>
