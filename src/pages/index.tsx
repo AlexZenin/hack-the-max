@@ -1,5 +1,14 @@
+import axios from 'axios'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import handler from './api/s3/uploadFile'
+import { NextApiRequest, NextApiResponse } from 'next'
+import handleUpload from './api/s3/uploadFile'
+import _default from 'next/dist/client/router'
+import { any } from 'zod'
+
+const BUCKET_URL = "https://guess-who-hackathon.s3.ap-southeast-2.amazonaws.com/";
+//^add the key name to get the photo. eg. puppy.png
 
 const Home: NextPage = () => {
   return (
@@ -26,6 +35,8 @@ const SignupForm = () => {
     console.log(
       JSON.stringify({ username: username.value, password: password.value }),
     )
+    //go to my uploadFile class.
+    axios.post('/api/s3/uploadFile', e.target.elements.file);
   }
 
   return (
@@ -61,7 +72,7 @@ const SignupForm = () => {
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
             type="email"
-            placeholder="example@reece.com"
+            placeholder="friends@reece.com"
           />
         </div>
         <div className="mb-4">
@@ -94,6 +105,19 @@ const SignupForm = () => {
             placeholder="******************"
           />
           {/* <p className="text-xs italic">Please choose a password.</p> */}
+        </div>
+        <div className="mb-7">
+          <label 
+            className="block text-gray-700 text-sm font-bold mb-2"
+            id="image"
+            htmlFor="image"
+            >
+              Image
+          </label>
+          <input 
+            id="image"
+            type = "file"
+          />
         </div>
         <div className="flex items-center justify-between">
           <button
