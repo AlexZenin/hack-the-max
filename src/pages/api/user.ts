@@ -1,5 +1,4 @@
-import { NextApiResponse } from "next";
+const Redis = require("ioredis");
 
-export default function handler(_, res: NextApiResponse) {
-  res.status(200).json({ name: 'John Doe' })
-}
+let client = new Redis("redis://:9e4bfd4918be48d4bd6290b807ae0319@apn1-unique-rabbit-33775.upstash.io:33775");
+client.get('foo', 'bar');
