@@ -13,18 +13,18 @@ const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(JSON.stringify(req.body))
 
   const location = {
-    lat: String(body.location.lat) || "",
-    lng: String(body.location.lng) || "",
-  };
+    lat: String(body.location.lat) || '',
+    lng: String(body.location.lng) || '',
+  }
 
   const data = {
     name: String(body.email),
-    accountName:  String(body.accountName) || "",
-    accountNumber:  String(body.accountNumber) || "",
-    phoneNumber: String(body.phoneNumber) || "N/A",
-    imageURL: String(body.imageURL) || "",
+    accountName: String(body.accountName) || '',
+    accountNumber: String(body.accountNumber) || '',
+    phoneNumber: String(body.phoneNumber) || 'N/A',
+    imageURL: String(body.imageURL) || '',
     location: location,
-  };
+  }
 
   console.log(JSON.stringify(data))
   // Generate a random id to store the survey entry under
