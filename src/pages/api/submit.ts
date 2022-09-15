@@ -10,6 +10,7 @@ const redis = new Redis({
 })
 
 const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+
   console.log(JSON.stringify(req.body))
   let body
    // we need to convert this back to json as req.body is coming as a string
@@ -19,13 +20,18 @@ const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     body = req.body
   }
 
+  const currentTime = Date.now()
+
   const location: Location = {
-    lat: String(body.location.lat) || '',
-    lng: String(body.location.lng) || '',
+    lat: String(body.location.lat),
+    lng: String(body.location.lng),
+    timestamp: String(currentTime),
   }
+
   interface Location {
     lat: string
     lng: string
+    timestamp: string 
   }
   interface PostedData {
     name: string

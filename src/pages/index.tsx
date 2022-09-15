@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 // import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
 
@@ -39,11 +39,11 @@ const SignupForm = () => {
   useEffect(() => {
     //get the email from session storage and if exists, set it to the email field
     const alreadyAddedEmail = sessionStorage.getItem('email')
-    if (alreadyAddedEmail) {
-      ;(document.getElementById('email') as HTMLInputElement).value =
-        alreadyAddedEmail
-      console.log(' alreadyAddedEmail - ', alreadyAddedEmail)
-    }
+    // if (alreadyAddedEmail) {
+    //   ;(document.getElementById('email') as HTMLInputElement).value =
+    //     alreadyAddedEmail
+    //   console.log(' alreadyAddedEmail - ', alreadyAddedEmail)
+    // }
 
     const geoId = window.navigator.geolocation.watchPosition((position) => {
       setCoordinate({
@@ -72,17 +72,31 @@ const SignupForm = () => {
         company: company.value,
       }),
     )
-    // uploadFile()
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
-    fetch('/api/submit', { method: 'post' })
+    fetch('/api/submit', {
+      method: 'post',
+      body: JSON.stringify({
+        email: email.value,
+        name: name.value,
+        company: company.value,
+        accountName: name.value,
+        accountNumber: 3133569, // NGP TEST
+        phoneNumber: '0392740002', // hardcoded for now
+        imageURL: uploadedFile,
+        location: {
+          lat: coordinate.lat,
+          lng: coordinate.long,
+        },
+      }),
+    })
       .then(() => {
         setStatus('success')
       })
       .catch((err) => {
-        // console.error(err)
-        setStatus('success')
+        console.error(err)
+        setStatus('error')
       })
       .finally(() => {
         setLoading(false)
@@ -115,13 +129,18 @@ const SignupForm = () => {
 
     setUploadedFile(BUCKET_URL + file.name)
     console.log(uploadedFile)
-    setFile(null)
   }
+
+  const uploadRef = useRef()
 
   return (
     <div className="max-w-lg mx-[auto] h-screen">
       <div className="flex flex-col items-center bg-gradient-to-r from-[#003057] to-[#347EB7] h-2/6">
         <svg
+          onClick={() => {
+            uploadRef.current?.click()
+          }}
+          style={{ cursor: 'pointer' }}
           width="160"
           height="160"
           viewBox="0 0 160 160"
@@ -129,6 +148,73 @@ const SignupForm = () => {
           xmlns="http://www.w3.org/2000/svg"
           className="m-auto"
         >
+          <svg
+            width="56"
+            height="56"
+            viewBox="0 0 56 56"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute top-32 right-24"
+          >
+            <g filter="url(#filter0_d_14_944)">
+              <circle cx="28" cy="24" r="24" fill="white" />
+              <g clipPath="url(#clip0_14_944)">
+                <path
+                  d="M28 28.2C29.7674 28.2 31.2 26.7673 31.2 25C31.2 23.2327 29.7674 21.8 28 21.8C26.2327 21.8 24.8 23.2327 24.8 25C24.8 26.7673 26.2327 28.2 28 28.2Z"
+                  fill="black"
+                />
+                <path
+                  d="M25 15L23.17 17H20C18.9 17 18 17.9 18 19V31C18 32.1 18.9 33 20 33H36C37.1 33 38 32.1 38 31V19C38 17.9 37.1 17 36 17H32.83L31 15H25ZM28 30C25.24 30 23 27.76 23 25C23 22.24 25.24 20 28 20C30.76 20 33 22.24 33 25C33 27.76 30.76 30 28 30Z"
+                  fill="black"
+                />
+              </g>
+            </g>
+            <defs>
+              <filter
+                id="filter0_d_14_944"
+                x="0"
+                y="0"
+                width="56"
+                height="56"
+                filterUnits="userSpaceOnUse"
+                colorInterpolationFilters="sRGB"
+              >
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  result="hardAlpha"
+                />
+                <feOffset dy="4" />
+                <feGaussianBlur stdDeviation="2" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                />
+                <feBlend
+                  mode="normal"
+                  in2="BackgroundImageFix"
+                  result="effect1_dropShadow_14_944"
+                />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="effect1_dropShadow_14_944"
+                  result="shape"
+                />
+              </filter>
+              <clipPath id="clip0_14_944">
+                <rect
+                  width="24"
+                  height="24"
+                  fill="white"
+                  transform="translate(16 13)"
+                />
+              </clipPath>
+            </defs>
+          </svg>
           <g clipPath="url(#clip0_14_937)">
             <path
               d="M80 160C124.183 160 160 124.183 160 80C160 35.8172 124.183 0 80 0C35.8172 0 0 35.8172 0 80C0 124.183 35.8172 160 80 160Z"
@@ -150,80 +236,12 @@ const SignupForm = () => {
             </clipPath>
           </defs>
         </svg>
-        <div className="relative text-xs left-2 -top-16 text-center w-20">{`Upload your photo`}</div>
-        <svg
-          width="56"
-          height="56"
-          viewBox="0 0 56 56"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="absolute top-32 right-24"
-        >
-          <g filter="url(#filter0_d_14_944)">
-            <circle cx="28" cy="24" r="24" fill="white" />
-            <g clipPath="url(#clip0_14_944)">
-              <path
-                d="M28 28.2C29.7674 28.2 31.2 26.7673 31.2 25C31.2 23.2327 29.7674 21.8 28 21.8C26.2327 21.8 24.8 23.2327 24.8 25C24.8 26.7673 26.2327 28.2 28 28.2Z"
-                fill="black"
-              />
-              <path
-                d="M25 15L23.17 17H20C18.9 17 18 17.9 18 19V31C18 32.1 18.9 33 20 33H36C37.1 33 38 32.1 38 31V19C38 17.9 37.1 17 36 17H32.83L31 15H25ZM28 30C25.24 30 23 27.76 23 25C23 22.24 25.24 20 28 20C30.76 20 33 22.24 33 25C33 27.76 30.76 30 28 30Z"
-                fill="black"
-              />
-            </g>
-          </g>
-          <defs>
-            <filter
-              id="filter0_d_14_944"
-              x="0"
-              y="0"
-              width="56"
-              height="56"
-              filterUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
-            >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
-              <feOffset dy="4" />
-              <feGaussianBlur stdDeviation="2" />
-              <feComposite in2="hardAlpha" operator="out" />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="BackgroundImageFix"
-                result="effect1_dropShadow_14_944"
-              />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="effect1_dropShadow_14_944"
-                result="shape"
-              />
-            </filter>
-            <clipPath id="clip0_14_944">
-              <rect
-                width="24"
-                height="24"
-                fill="white"
-                transform="translate(16 13)"
-              />
-            </clipPath>
-          </defs>
-        </svg>
-        <h1 className="text-white font-bold text-2xl py-3">{`Welcome to guess who!`}</h1>
+
+        <h1 className="text-white font-bold text-2xl py-3">{`GUESS WHO!`}</h1>
       </div>
       <div className="container flew items-center p-4 mx-auto min-h screen justify-center">
-        <form onSubmit={uploadFile}>
-          <p>Please select an image to upload so that we can identify you!</p>
-          <input type="file" onChange={(e) => selectFile(e)} />
+        <form onSubmit={uploadFile} style={{ display: 'none' }}>
+          <input type="file" onChange={(e) => selectFile(e)} ref={uploadRef} />
         </form>
         <img src={uploadedFile} />
       </div>
@@ -238,8 +256,8 @@ const SignupForm = () => {
               <div className="mx-auto w-64 text-center ">
                 <div className="relative w-64"></div>
               </div>
-              <h2 className="font-bold text-lg py-3">Create your account</h2>
-              <div className="text-base pt-2 pb-8">{`Create your account here. Don't forget, the most creative profile photo will win a prize`}</div>
+              {/* <h2 className="font-bold text-lg py-3">Create your account</h2> */}
+              <div className="text-base pt-2 pb-8">{`Create your Guess Who account. The most creative profile and photo will win a prize`}</div>
             </div>
             <div className="mb-4">
               <label
