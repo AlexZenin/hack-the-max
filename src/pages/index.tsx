@@ -39,11 +39,11 @@ const SignupForm = () => {
   useEffect(() => {
     //get the email from session storage and if exists, set it to the email field
     const alreadyAddedEmail = sessionStorage.getItem('email')
-    if (alreadyAddedEmail) {
-      ;(document.getElementById('email') as HTMLInputElement).value =
-        alreadyAddedEmail
-      console.log(' alreadyAddedEmail - ', alreadyAddedEmail)
-    }
+    // if (alreadyAddedEmail) {
+    //   ;(document.getElementById('email') as HTMLInputElement).value =
+    //     alreadyAddedEmail
+    //   console.log(' alreadyAddedEmail - ', alreadyAddedEmail)
+    // }
 
     const geoId = window.navigator.geolocation.watchPosition((position) => {
       setCoordinate({
@@ -78,10 +78,21 @@ const SignupForm = () => {
     sessionStorage.setItem('email', email.value)
     fetch('/api/submit', {
       method: 'post',
+      // body: JSON.stringify({
+      //   name: name.value,
+      //   email: email.value,
+      //   company: company.value,
+      // }),
       body: JSON.stringify({
-        name: name.value,
-        email: email.value,
-        company: company.value,
+        email: 'abc@test.com',
+        accountName: 'POS TEST EXPIRE',
+        accountNumber: 3012321,
+        phoneNumber: '0392740002',
+        imageURL: 's3:aws.actrol',
+        location: {
+          lat: -37.8502412,
+          lng: 145.0942132,
+        },
       }),
     })
       .then(() => {

@@ -10,8 +10,9 @@ const redis = new Redis({
 })
 
 const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const body = req.body
-  console.log(JSON.stringify(req.body))
+  // we need to convert this back to json as req.body is coming as a string
+  const body = JSON.parse(req.body)
+  console.log(body)
 
   const location = {
     lat: String(body.location.lat) || '',
