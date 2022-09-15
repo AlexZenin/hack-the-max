@@ -86,9 +86,9 @@ const SignupForm = () => {
       body: JSON.stringify({
         email: email.value,
         accountName: name.value,
-        accountNumber: company.value,
-        phoneNumber: '0392740002',
-        imageURL: 's3:aws.actrol',
+        accountNumber: 3133569, // NGP TEST
+        phoneNumber: '0392740002', // hardcoded for now
+        imageURL: uploadedFile,
         location: {
           lat: coordinate.lat,
           lng: coordinate.long,
@@ -236,7 +236,7 @@ const SignupForm = () => {
             </clipPath>
           </defs>
         </svg>
-        <h1 className="text-white font-bold text-2xl py-3">{`Welcome to guess who!`}</h1>
+        <h1 className="text-white font-bold text-2xl py-3">{`GUESS WHO!`}</h1>
       </div>
       <div className="container flew items-center p-4 mx-auto min-h screen justify-center">
         <form onSubmit={uploadFile}>
@@ -256,8 +256,8 @@ const SignupForm = () => {
               <div className="mx-auto w-64 text-center ">
                 <div className="relative w-64"></div>
               </div>
-              <h2 className="font-bold text-lg py-3">Create your account</h2>
-              <div className="text-base pt-2 pb-8">{`Create your account here. Don't forget, the most creative profile photo will win a prize`}</div>
+              {/* <h2 className="font-bold text-lg py-3">Create your account</h2> */}
+              <div className="text-base pt-2 pb-8">{`Create your Guess Who account. The most creative profile and photo will win a prize`}</div>
             </div>
             <div className="mb-4">
               <label
