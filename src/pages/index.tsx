@@ -72,17 +72,11 @@ const SignupForm = () => {
         company: company.value,
       }),
     )
-    // uploadFile()
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
     fetch('/api/submit', {
       method: 'post',
-      // body: JSON.stringify({
-      //   name: name.value,
-      //   email: email.value,
-      //   company: company.value,
-      // }),
       body: JSON.stringify({
         email: email.value,
         accountName: name.value,
@@ -99,7 +93,7 @@ const SignupForm = () => {
         setStatus('success')
       })
       .catch((err) => {
-        // console.error(err)
+        console.error(err)
         setStatus('error')
       })
       .finally(() => {

@@ -10,8 +10,13 @@ const redis = new Redis({
 })
 
 const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  let body
   // we need to convert this back to json as req.body is coming as a string
-  const body = JSON.parse(req.body)
+  if (typeof req.body === 'string') {
+    body = JSON.parse(req.body)
+  } else {
+    body = req.body
+  }
   console.log(body)
 
   const location = {
