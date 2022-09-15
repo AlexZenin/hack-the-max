@@ -29,6 +29,7 @@ const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [status, setStatus] = useState<string>('init')
   // const [imageUrl, imageUrl] = useState<any>()
+  const [uploadedFile, setUploadedFile] = useState<any>()
   const [uploadingStatus, setUploadingStatus] = useState<any>()
   const [coordinate, setCoordinate] = useState({
     lat: 0,
@@ -71,7 +72,7 @@ const SignupForm = () => {
         company: company.value,
       }),
     )
-    uploadFile()
+    // uploadFile()
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
