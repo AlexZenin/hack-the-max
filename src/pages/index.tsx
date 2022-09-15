@@ -81,7 +81,7 @@ const SignupForm = () => {
         email: email.value,
         name: name.value,
         company: company.value,
-        accountName: 'NGP TEST',
+        accountName: name.value,
         accountNumber: 3133569, // NGP TEST
         phoneNumber: '0392740002', // hardcoded for now
         imageURL: uploadedFile,
