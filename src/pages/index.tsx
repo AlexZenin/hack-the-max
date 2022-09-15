@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
+// import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
 
 const BUCKET_URL =
   'https://guess-who-hackathon.s3.ap-southeast-2.amazonaws.com/'
@@ -76,13 +76,20 @@ const SignupForm = () => {
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
-    fetch('/api/user')
+    fetch('/api/submit', {
+      method: 'post',
+      body: JSON.stringify({
+        name: name.value,
+        email: email.value,
+        company: company.value,
+      }),
+    })
       .then(() => {
         setStatus('success')
       })
       .catch((err) => {
         // console.error(err)
-        setStatus('success')
+        setStatus('error')
       })
       .finally(() => {
         setLoading(false)
@@ -230,7 +237,7 @@ const SignupForm = () => {
       {status === 'init' && (
         <>
           <form
-            className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 h-4/6"
+            className="bg-white rounded px-8 pt-6 pb-8 mb-4 h-4/6"
             onSubmit={handleFormSubmit}
             id="create-account-form"
           >
@@ -313,7 +320,7 @@ const SignupForm = () => {
               )}
             </div>
           </form>
-          <div className="flex items-center justify-between text-xs text-center mb-4">
+          <div className="flex items-center justify-between text-xs text-center mb-4 px-8 pt-6 pb-8">
             {`By opting in to guess who you will be providing your phone's location data when the web page is open`}
           </div>
         </>
