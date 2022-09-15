@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 // import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
 
@@ -104,6 +104,7 @@ const SignupForm = () => {
       })
       .finally(() => {
         setLoading(false)
+        uploadRef.current?.click()
       })
   }
 
@@ -133,13 +134,16 @@ const SignupForm = () => {
 
     setUploadedFile(BUCKET_URL + file.name)
     console.log(uploadedFile)
-    setFile(null)
   }
+
+  const uploadRef = useRef()
 
   return (
     <div className="max-w-lg mx-[auto] h-screen">
       <div className="flex flex-col items-center bg-gradient-to-r from-[#003057] to-[#347EB7] h-2/6">
         <svg
+        onClick={() => {uploadRef.current?.click()}}
+        style={{cursor: 'pointer'}}
           width="160"
           height="160"
           viewBox="0 0 160 160"
@@ -147,29 +151,7 @@ const SignupForm = () => {
           xmlns="http://www.w3.org/2000/svg"
           className="m-auto"
         >
-          <g clipPath="url(#clip0_14_937)">
-            <path
-              d="M80 160C124.183 160 160 124.183 160 80C160 35.8172 124.183 0 80 0C35.8172 0 0 35.8172 0 80C0 124.183 35.8172 160 80 160Z"
-              fill="white"
-              fillOpacity="0.3"
-            />
-            <path
-              d="M79.9999 79.9998C96.0663 79.9998 109.091 66.9754 109.091 50.9089C109.091 34.8425 96.0663 21.818 79.9999 21.818C63.9334 21.818 50.9089 34.8425 50.9089 50.9089C50.9089 66.9754 63.9334 79.9998 79.9999 79.9998Z"
-              fill="white"
-            />
-            <path
-              d="M95.3769 92.4675H64.7275C45.7145 92.4675 30.1301 108.052 30.1301 127.065V139.013C30.1301 140.26 30.234 141.506 30.3379 142.753C43.9483 153.558 61.1951 160 80.0003 160C98.8055 160 116.052 153.558 129.663 142.649C129.766 141.403 129.87 140.156 129.87 138.909V126.961C129.87 108.052 114.286 92.4675 95.3769 92.4675Z"
-              fill="white"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_14_937">
-              <rect width="160" height="160" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
-        <div className="relative text-xs left-2 -top-16 text-center w-20">{`Upload your photo`}</div>
-        <svg
+            <svg
           width="56"
           height="56"
           viewBox="0 0 56 56"
@@ -236,12 +218,34 @@ const SignupForm = () => {
             </clipPath>
           </defs>
         </svg>
+          <g clipPath="url(#clip0_14_937)">
+            <path
+              d="M80 160C124.183 160 160 124.183 160 80C160 35.8172 124.183 0 80 0C35.8172 0 0 35.8172 0 80C0 124.183 35.8172 160 80 160Z"
+              fill="white"
+              fillOpacity="0.3"
+            />
+            <path
+              d="M79.9999 79.9998C96.0663 79.9998 109.091 66.9754 109.091 50.9089C109.091 34.8425 96.0663 21.818 79.9999 21.818C63.9334 21.818 50.9089 34.8425 50.9089 50.9089C50.9089 66.9754 63.9334 79.9998 79.9999 79.9998Z"
+              fill="white"
+            />
+            <path
+              d="M95.3769 92.4675H64.7275C45.7145 92.4675 30.1301 108.052 30.1301 127.065V139.013C30.1301 140.26 30.234 141.506 30.3379 142.753C43.9483 153.558 61.1951 160 80.0003 160C98.8055 160 116.052 153.558 129.663 142.649C129.766 141.403 129.87 140.156 129.87 138.909V126.961C129.87 108.052 114.286 92.4675 95.3769 92.4675Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_14_937">
+              <rect width="160" height="160" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      
         <h1 className="text-white font-bold text-2xl py-3">{`GUESS WHO!`}</h1>
       </div>
       <div className="container flew items-center p-4 mx-auto min-h screen justify-center">
-        <form onSubmit={uploadFile}>
-          <p>Please select an image to upload so that we can identify you!</p>
-          <input type="file" onChange={(e) => selectFile(e)} />
+        <form onSubmit={uploadFile}         style={{display: 'none'}}
+>
+          <input type="file" onChange={(e) => selectFile(e)} ref={uploadRef} />
         </form>
         <img src={uploadedFile} />
       </div>
