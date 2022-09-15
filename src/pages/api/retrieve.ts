@@ -7,9 +7,9 @@ const resultsHandler = async (_, res: NextApiResponse) => {
   // Retrieve data from redis
 
   const redis = new Redis({
-    url: 'https://apn1-unique-rabbit-33775.upstash.io',
+    url: 'https://us1-better-ox-38374.upstash.io',
     token:
-      'AYPvASQgOTJhOThiOTctMGU0Mi00MmJiLWFjY2YtNGExNWZlOGM4MGE1OWU0YmZkNDkxOGJlNDhkNGJkNjI5MGI4MDdhZTAzMTk=',
+      'AZXmASQgZDIwZmYxNTgtYTU3Yi00OGIxLWJjZGEtY2ZhYjkxZmUxZTViMjRkMmFjNzgxNmQzNDdiYzg0ODdlMmQwMzcwODUxMzc=',
   })
 
   console.log('request received')

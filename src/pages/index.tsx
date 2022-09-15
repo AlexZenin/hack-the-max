@@ -31,10 +31,18 @@ const SignupForm = () => {
   // const [imageUrl, imageUrl] = useState<any>()
   const [uploadedFile, setUploadedFile] = useState<any>()
   const [uploadingStatus, setUploadingStatus] = useState<any>()
-  const [coordinate, setCoordinate] = useState({
+  console.count('hello')
+
+  // const [coordinate, setCoordinate] = useState()
+  //
+  const coordinateRef = useRef({
     lat: 0,
     long: 0,
   })
+  function setCoordinate(x) {
+    coordinateRef.current = x
+  }
+  const coordinate = coordinateRef.current
 
   useEffect(() => {
     //get the email from session storage and if exists, set it to the email field
