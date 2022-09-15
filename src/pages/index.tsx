@@ -63,7 +63,7 @@ const SignupForm = () => {
     console.log(file)
   }
 
-  function handleSubmit(e: any) {
+  function handleFormSubmit(e: any) {
     e.preventDefault()
     const { name, email, company } = e.target.elements
     console.log(
@@ -73,20 +73,21 @@ const SignupForm = () => {
         company: company.value,
       }),
     )
-    uploadFile()
+    // uploadFile()
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
-    // fetch('/api/user')
-    //   .then(() => {
-    //     setStatus('success')
-    //   })
-    //   .catch((err) => {
-    //     console.error(err)
-    //   })
-    //   .finally(() => {
-    //     setLoading(false)
-    //   })
+    fetch('/api/user')
+      .then(() => {
+        setStatus('success')
+      })
+      .catch((err) => {
+        // console.error(err)
+        setStatus('success')
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const uploadFile = async () => {
@@ -150,7 +151,7 @@ const SignupForm = () => {
             </clipPath>
           </defs>
         </svg>
-        <div className="relative text-xs left-2 -top-16 w-20">{`Upload your photo`}</div>
+        <div className="relative text-xs left-2 -top-16 text-center w-20">{`Upload your photo`}</div>
         <svg
           width="56"
           height="56"
@@ -218,122 +219,127 @@ const SignupForm = () => {
             </clipPath>
           </defs>
         </svg>
-        <h1 className="text-white font-bold text-xl py-3">{`Welcome to guess who!`}</h1>
+        <h1 className="text-white font-bold text-2xl py-3">{`Welcome to guess who!`}</h1>
       </div>
-      <form
-        className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 h-4/6"
-        onSubmit={handleSubmit}
-      >
-        <div className="mb-4">
-          <div className="mx-auto w-64 text-center ">
-            <div className="relative w-64"></div>
-          </div>
-          <h2 className="font-bold text-lg py-3">Create your account</h2>
-          <div className="text-base pt-2 pb-8">{`Create your account here. Don't forget, the most creative profile photo will win a prize`}</div>
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            id="name"
-            htmlFor="name"
+      <div className="container flew items-center p-4 mx-auto min-h screen justify-center">
+        <form onSubmit={uploadFile}>
+          <p>Please select an image to upload so that we can identify you!</p>
+          <input type="file" onChange={(e) => selectFile(e)} />
+        </form>
+        <img src={uploadedFile} />
+      </div>
+      {status === 'init' && (
+        <>
+          <form
+            className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4 h-4/6"
+            onSubmit={handleFormSubmit}
+            id="create-account-form"
           >
-            Name
-          </label>
-          <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="name"
-            type="text"
-            placeholder="Name"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            id="company"
-            htmlFor="company"
-          >
-            Company
-          </label>
-          <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="company"
-            type="text"
-            placeholder="ABC Plumbing"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            id="email"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="example@reece.com"
-          />
-        </div>
-        <div className="flex items-center justify-between mb-4">
-          {/* preloader button */}
-          {loading && status === 'init' && (
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-full justify-center">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div className="mb-4">
+              <div className="mx-auto w-64 text-center ">
+                <div className="relative w-64"></div>
+              </div>
+              <h2 className="font-bold text-lg py-3">Create your account</h2>
+              <div className="text-base pt-2 pb-8">{`Create your account here. Don't forget, the most creative profile photo will win a prize`}</div>
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                id="name"
+                htmlFor="name"
               >
-                <path
-                  d="M14 2C20.6274 2 26 7.37258 26 14C26 20.6274 20.6274 26 14 26C7.37258 26 2 20.6274 2 14C2 11.3321 2.87062 8.86758 4.34324 6.875"
-                  stroke="white"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-          )}
-          {!loading && status === 'init' && (
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-full justify-center">
-              <span>Opt In</span>
-            </button>
-          )}
-        </div>
-
-        {status === 'success' && (
-          <div className="flex items-center justify-between mb-4">
-            {/* success button */}
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-full justify-center">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                Name
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="name"
+                type="text"
+                placeholder="Name"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                id="company"
+                htmlFor="company"
               >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M18 8.5H17V6.5C17 3.74 14.76 1.5 12 1.5C9.24 1.5 7 3.74 7 6.5V8.5H6C4.9 8.5 4 9.4 4 10.5V20.5C4 21.6 4.9 22.5 6 22.5H18C19.1 22.5 20 21.6 20 20.5V10.5C20 9.4 19.1 8.5 18 8.5ZM12 17.5C10.9 17.5 10 16.6 10 15.5C10 14.4 10.9 13.5 12 13.5C13.1 13.5 14 14.4 14 15.5C14 16.6 13.1 17.5 12 17.5ZM9 6.5V8.5H15V6.5C15 4.84 13.66 3.5 12 3.5C10.34 3.5 9 4.84 9 6.5Z"
-                />
-              </svg>
-            </button>
+                Company
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="company"
+                type="text"
+                placeholder="ABC Plumbing"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                id="email"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <input
+                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="email"
+                type="email"
+                placeholder="example@reece.com"
+              />
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              {/* preloader button */}
+              {loading && status === 'init' && (
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-full justify-center">
+                  <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M14 2C20.6274 2 26 7.37258 26 14C26 20.6274 20.6274 26 14 26C7.37258 26 2 20.6274 2 14C2 11.3321 2.87062 8.86758 4.34324 6.875"
+                      stroke="white"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              )}
+              {!loading && status === 'init' && (
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-full justify-center">
+                  <span>Opt In</span>
+                </button>
+              )}
+            </div>
+          </form>
+          <div className="flex items-center justify-between text-xs text-center mb-4">
+            {`By opting in to guess who you will be providing your phone's location data when the web page is open`}
           </div>
-        )}
-        <div className="container flew items-center p-4 mx-auto min-h screen justify-center">
-          <main>
-            <p>Please select an image to upload so that we can identify you!</p>
-            <input type="file" onChange={(e) => selectFile(e)} />
-          </main>
+        </>
+      )}
+      {status === 'success' && (
+        <div
+          className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+          role="alert"
+        >
+          <div className="flex">
+            <div className="py-1">
+              <svg
+                className="fill-current h-6 w-6 text-teal-500 mr-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+              </svg>
+            </div>
+            <div>
+              <p className="font-bold">You are logged in successfully</p>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center justify-between text-xs text-center mb-4">
-          {`By opting in to guess who you will be providing your phone's location data when the web page is open`}
-        </div>
-      </form>
-      <img src={uploadedFile} />
+      )}
     </div>
   )
 }
