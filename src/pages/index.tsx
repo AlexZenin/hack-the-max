@@ -122,7 +122,6 @@ const SignupForm = () => {
 
     setUploadedFile(BUCKET_URL + file.name)
     console.log(uploadedFile)
-    setFile(null)
   }
 
   return (
