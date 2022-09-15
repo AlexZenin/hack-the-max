@@ -79,7 +79,9 @@ const SignupForm = () => {
       method: 'post',
       body: JSON.stringify({
         email: email.value,
-        accountName: name.value,
+        name: name.value,
+        company: company.value,
+        accountName: 'NGP TEST',
         accountNumber: 3133569, // NGP TEST
         phoneNumber: '0392740002', // hardcoded for now
         imageURL: uploadedFile,

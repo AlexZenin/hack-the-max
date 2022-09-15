@@ -28,7 +28,9 @@ const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const data = {
-    name: String(body.email),
+    name: String(body.name),
+    email: String(body.email),
+    company: String(body.company),
     accountName: String(body.accountName) || '',
     accountNumber: String(body.accountNumber) || '',
     phoneNumber: String(body.phoneNumber) || 'N/A',
