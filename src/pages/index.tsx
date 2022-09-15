@@ -76,13 +76,20 @@ const SignupForm = () => {
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
-    fetch('/api/submit', { method: 'post' })
+    fetch('/api/submit', {
+      method: 'post',
+      body: JSON.stringify({
+        name: name.value,
+        email: email.value,
+        company: company.value,
+      }),
+    })
       .then(() => {
         setStatus('success')
       })
       .catch((err) => {
         // console.error(err)
-        setStatus('success')
+        setStatus('error')
       })
       .finally(() => {
         setLoading(false)
