@@ -1,6 +1,11 @@
 import type { NextPage } from 'next'
-import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
+
+const BUCKET_URL =
+  'https://guess-who-hackathon.s3.ap-southeast-2.amazonaws.com/'
 
 const Home: NextPage = () => {
   return (
@@ -23,6 +28,9 @@ export default Home
 const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [status, setStatus] = useState<string>('init')
+  const [file, setFile] = useState<any>()
+  const [uploadingStatus, setUploadingStatus] = useState<any>()
+  const [uploadedFile, setUploadedFile] = useState<any>()
   const [coordinate, setCoordinate] = useState({
     lat: 0,
     long: 0,
@@ -49,6 +57,12 @@ const SignupForm = () => {
     }
   })
 
+  function selectFile(e: any) {
+    console.log(e.target.files)
+    setFile(e.target.files[0])
+    console.log(file)
+  }
+
   function handleSubmit(e: any) {
     e.preventDefault()
     const { name, email, company } = e.target.elements
@@ -59,19 +73,49 @@ const SignupForm = () => {
         company: company.value,
       }),
     )
+    uploadFile()
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
-    fetch('/api/user')
-      .then(() => {
-        setStatus('success')
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    // fetch('/api/user')
+    //   .then(() => {
+    //     setStatus('success')
+    //   })
+    //   .catch((err) => {
+    //     console.error(err)
+    //   })
+    //   .finally(() => {
+    //     setLoading(false)
+    //   })
+  }
+
+  const uploadFile = async () => {
+    //for ux info
+    setUploadingStatus('Uploading the file to AWS S3')
+
+    //post req to own endpoint to get aws fancy url ting
+    const { data } = await axios.post('/api/s3/uploadFile', {
+      name: file.name,
+      type: file.type,
+    })
+
+    //what did we get
+    console.log(data)
+
+    //get the url
+    const url = data.url
+
+    //upload the file
+    const { data: newData } = await axios.put(url, file, {
+      headers: {
+        'Content-type': file.type,
+        'Access-Control-Allow-Origin': '*',
+      },
+    })
+
+    setUploadedFile(BUCKET_URL + file.name)
+    console.log(uploadedFile)
+    //setFile(null)
   }
 
   return (
@@ -279,11 +323,17 @@ const SignupForm = () => {
             </button>
           </div>
         )}
-
+        <div className="container flew items-center p-4 mx-auto min-h screen justify-center">
+          <main>
+            <p>Please select an image to upload so that we can identify you!</p>
+            <input type="file" onChange={(e) => selectFile(e)} />
+          </main>
+        </div>
         <div className="flex items-center justify-between text-xs text-center mb-4">
           {`By opting in to guess who you will be providing your phone's location data when the web page is open`}
         </div>
       </form>
+      <img src={uploadedFile} />
     </div>
   )
 }
