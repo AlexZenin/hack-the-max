@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
+// import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
 
 const BUCKET_URL =
   'https://guess-who-hackathon.s3.ap-southeast-2.amazonaws.com/'
@@ -76,7 +76,7 @@ const SignupForm = () => {
     setLoading(true)
     // save email in session storage
     sessionStorage.setItem('email', email.value)
-    fetch('/api/user')
+    fetch('/api/submit', { method: 'post' })
       .then(() => {
         setStatus('success')
       })
