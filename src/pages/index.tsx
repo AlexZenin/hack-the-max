@@ -84,14 +84,14 @@ const SignupForm = () => {
       //   company: company.value,
       // }),
       body: JSON.stringify({
-        email: 'abc@test.com',
-        accountName: 'POS TEST EXPIRE',
-        accountNumber: 3012321,
+        email: email.value,
+        accountName: name.value,
+        accountNumber: company.value,
         phoneNumber: '0392740002',
         imageURL: 's3:aws.actrol',
         location: {
-          lat: -37.8502412,
-          lng: 145.0942132,
+          lat: coordinate.lat,
+          lng: coordinate.long,
         },
       }),
     })
