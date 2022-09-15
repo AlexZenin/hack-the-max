@@ -19,13 +19,18 @@ const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   console.log(body)
 
+  const dateTime = Date.now()
+
   const location = {
     lat: String(body.location.lat) || '',
     lng: String(body.location.lng) || '',
+    timestamp: dateTime || '',
   }
 
   const data = {
-    name: String(body.email),
+    name: String(body.name),
+    email: String(body.email),
+    company: String(body.company),
     accountName: String(body.accountName) || '',
     accountNumber: String(body.accountNumber) || '',
     phoneNumber: String(body.phoneNumber) || 'N/A',
