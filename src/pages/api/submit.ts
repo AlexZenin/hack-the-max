@@ -19,9 +19,12 @@ const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   console.log(body)
 
+  const dateTime = Date.now()
+
   const location = {
     lat: String(body.location.lat) || '',
     lng: String(body.location.lng) || '',
+    timestamp: dateTime || '',
   }
 
   const data = {
