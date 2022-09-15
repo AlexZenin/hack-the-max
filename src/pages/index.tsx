@@ -100,7 +100,6 @@ const SignupForm = () => {
       })
       .finally(() => {
         setLoading(false)
-        uploadRef.current?.click()
       })
   }
 
