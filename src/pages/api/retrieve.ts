@@ -22,7 +22,7 @@ const resultsHandler = async (_, res: NextApiResponse) => {
     //To run multiple queries at once, Upstash supports the use of the pipeline command. This way we can run multiple queries at once and get the results in a single call.
     const p = redis.pipeline()
     entries.forEach((id) => {
-      p.hgetall(id)
+        p.hgetall(id)
     })
     const results = await p.exec()
 
