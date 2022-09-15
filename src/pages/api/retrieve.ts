@@ -31,11 +31,10 @@ const resultsHandler = async (_, res: NextApiResponse) => {
 
     //now that we have the results, find anything where the timestamp is within 300s
     const filteredResults = results.filter((obj: any) => {
-      const fiveMinutes = 300*1000
+      const fiveMinutes = 300 * 1000
       const objTime = obj?.location?.timestamp
-      return objTime && ((currentDateTime - objTime) < fiveMinutes);
+      return objTime && currentDateTime - objTime < fiveMinutes
     })
-
 
     return res.status(200).json({
       success: true,
