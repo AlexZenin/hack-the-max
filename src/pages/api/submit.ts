@@ -1,6 +1,7 @@
 // pages/api/submit.js
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Redis } from '@upstash/redis'
+import { allowCors } from '../../utils/allowCors'
 
 const redis = new Redis({
   url: 'https://apn1-unique-rabbit-33775.upstash.io',
@@ -52,4 +53,4 @@ const submitHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 }
 
-export default submitHandler
+export default allowCors(submitHandler)

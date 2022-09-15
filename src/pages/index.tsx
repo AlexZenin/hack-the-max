@@ -28,9 +28,8 @@ export default Home
 const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [status, setStatus] = useState<string>('init')
-  const [file, setFile] = useState<any>()
+  // const [imageUrl, imageUrl] = useState<any>()
   const [uploadingStatus, setUploadingStatus] = useState<any>()
-  const [uploadedFile, setUploadedFile] = useState<any>()
   const [coordinate, setCoordinate] = useState({
     lat: 0,
     long: 0,
@@ -58,9 +57,8 @@ const SignupForm = () => {
   })
 
   function selectFile(e: any) {
-    console.log(e.target.files)
-    setFile(e.target.files[0])
-    console.log(file)
+    const file = e.target.files[0]
+    uploadFile(file)
   }
 
   function handleSubmit(e: any) {
@@ -89,7 +87,7 @@ const SignupForm = () => {
     //   })
   }
 
-  const uploadFile = async () => {
+  const uploadFile = async (file) => {
     //for ux info
     setUploadingStatus('Uploading the file to AWS S3')
 
@@ -115,7 +113,7 @@ const SignupForm = () => {
 
     setUploadedFile(BUCKET_URL + file.name)
     console.log(uploadedFile)
-    //setFile(null)
+    setFile(null)
   }
 
   return (
