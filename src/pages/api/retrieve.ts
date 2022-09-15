@@ -1,6 +1,7 @@
 // pages/api/results.js
 import { NextApiResponse } from 'next'
 import { Redis } from '@upstash/redis'
+import { allowCors } from '../../utils/allowCors'
 
 const resultsHandler = async (_, res: NextApiResponse) => {
   // Retrieve data from redis
@@ -40,4 +41,4 @@ const resultsHandler = async (_, res: NextApiResponse) => {
   }
 }
 
-export default resultsHandler
+export default allowCors(resultsHandler)
